@@ -20,7 +20,7 @@ function process_svg($svg_code, $size, $logo_id, $global_light_color = null, $gl
 {
     // Validate SVG input
     if (empty($svg_code) || stripos($svg_code, '<svg') === false) {
-        error_log(sprintf('Invalid SVG code for logo ID: %d', $logo_id));
+        // error_log(sprintf('Invalid SVG code for logo ID: %d', $logo_id));
         return '';
     }
 
@@ -108,7 +108,7 @@ function process_svg($svg_code, $size, $logo_id, $global_light_color = null, $gl
         return $wrapper . '</div>';
 
     } catch (Exception $e) {
-        error_log(sprintf('Error processing SVG for logo ID %d: %s', $logo_id, $e->getMessage()));
+        // error_log(sprintf('Error processing SVG for logo ID %d: %s', $logo_id, $e->getMessage()));
         return '';
     }
 }

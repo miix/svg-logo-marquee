@@ -32,6 +32,7 @@ if (!defined('ABSPATH')) {
   exit;
 }
 
+define('SVG_LOGO_MARQUEE_VERSION', '1.0');
 define('SVG_LOGO_DEFAULT_LIGHT', '#212529');  // Bootstrap dark color
 define('SVG_LOGO_DEFAULT_DARK', '#ffffff');   // White
 
@@ -172,7 +173,12 @@ function svg_logo_admin_scripts()
   if ($screen->post_type === 'svg_logo') {
     // First load all required styles
     wp_enqueue_style('wp-color-picker');
-    wp_enqueue_style('svg-logo-admin', plugins_url('assets/css/admin.css', __FILE__));
+    wp_enqueue_style(
+      'svg-logo-admin',
+      plugins_url('assets/css/admin.css', __FILE__),
+      array(),
+      SVG_LOGO_MARQUEE_VERSION
+    );
 
     // Then load all scripts in correct order
     wp_enqueue_script('jquery');
@@ -419,10 +425,21 @@ add_action('save_post', 'save_svg_meta_box');
 // Enqueue required styles and scripts
 function svg_marquee_enqueue_scripts()
 {
-  wp_enqueue_style('svg-marquee-style', plugins_url('assets/css/style.css', __FILE__));
-  wp_enqueue_script('svg-marquee-script', plugins_url('assets/js/script.js', __FILE__), array('jquery'), '1.0', true);
-}
+  wp_enqueue_style(
+    'svg-marquee-style',
+    plugins_url('assets/css/style.css', __FILE__),
+    array(),
+    SVG_LOGO_MARQUEE_VERSION
+  );
 
+  wp_enqueue_script(
+    'svg-marquee-script',
+    plugins_url('assets/js/script.js', __FILE__),
+    array('jquery'),
+    SVG_LOGO_MARQUEE_VERSION,
+    true
+  );
+}
 add_action('wp_enqueue_scripts', 'svg_marquee_enqueue_scripts');
 
 // Create shortcode
@@ -452,13 +469,8 @@ function svg_marquee_shortcode($atts)
   $args = array(
     'post_type' => 'svg_logo',
     'posts_per_page' => -1,
-    'meta_query' => array(
-      array(
-        'key' => '_svg_visible',
-        'value' => '1',
-        'compare' => '='
-      )
-    )
+    'meta_key' => '_svg_visible',
+    'meta_value' => '1',
   );
 
   // Add taxonomy query if category is specified
@@ -480,10 +492,8 @@ function svg_marquee_shortcode($atts)
     $args['order'] = 'ASC';
   }
 
+  // Get posts with optimized query
   $logos = get_posts($args);
-  if (empty($logos)) {
-    return '';
-  }
 
   // Sanitize values
   $light_color = sanitize_hex_color($atts['light_color']);
