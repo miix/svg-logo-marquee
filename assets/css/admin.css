@@ -1,0 +1,11 @@
+.wp-list-table #the-list {
+  cursor: move;
+}
+.ui-sortable-helper {
+  background-color: #fff !important;
+  border: 1px solid #ccc !important;
+}
+.ui-sortable-placeholder {
+  background-color: #f9f9f9 !important;
+  height: 50px;
+}
