@@ -1,0 +1,103 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SVG Logo Marquee\n"
+"POT-Creation-Date: 2025-03-11 12:00+0000\n"
+"PO-Revision-Date: 2025-03-11 12:00+0000\n"
+"Last-Translator: Fred Klopper <fred@miix.dev>\n"
+"Language-Team: Dutch <LL@li.org>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.5\n"
+
+#: svg-logo-marquee.php:102
+msgid "SVG Logos"
+msgstr "SVG logo's"
+
+#: svg-logo-marquee.php:103
+msgid "SVG Logo"
+msgstr "SVG logo"
+
+#: svg-logo-marquee.php:104
+msgid "Add New Logo"
+msgstr "Nieuw logo toevoegen"
+
+#: svg-logo-marquee.php:106
+msgid "Edit Logo"
+msgstr "Logo bewerken"
+
+#: svg-logo-marquee.php:107
+msgid "New Logo"
+msgstr "Nieuw logo"
+
+#: svg-logo-marquee.php:108
+msgid "View Logo"
+msgstr "Logo bekijken"
+
+#: svg-logo-marquee.php:109
+msgid "Search Logos"
+msgstr "Logo's zoeken"
+
+#: svg-logo-marquee.php:110
+msgid "No logos found"
+msgstr "Geen logo's gevonden"
+
+#: svg-logo-marquee.php:111
+msgid "No logos found in Trash"
+msgstr "Geen logo's gevonden in prullenbak"
+
+#: svg-logo-marquee.php:112
+msgid "All Logos"
+msgstr "Alle logo's"
+
+#: svg-logo-marquee.php:113
+msgid "Menu Name"
+msgstr "Menunaam"
+
+#: svg-logo-marquee.php:137
+msgid "Category"
+msgstr "Categorie"
+
+#: svg-logo-marquee.php:156
+msgid "All Categories"
+msgstr "Alle categorieën"
+
+#: svg-logo-marquee.php:530
+msgid "Visibility updated for %s logo."
+msgid_plural "Visibility updated for %s logos."
+msgstr[0] "Zichtbaarheid bijgewerkt voor %s logo."
+msgstr[1] "Zichtbaarheid bijgewerkt voor %s logo's."
+
+#: svg-logo-marquee.php:265
+msgid "Display this logo in marquee"
+msgstr "Toon dit logo in de marquee"
+
+#: svg-logo-marquee.php:269
+msgid "Paste your SVG code here."
+msgstr "Plak hier je SVG-code."
+
+#: svg-logo-marquee.php:272
+msgid "Light Mode Color:"
+msgstr "Lichte modus kleur:"
+
+#: svg-logo-marquee.php:277
+msgid "Dark Mode Color:"
+msgstr "Donkere modus kleur:"
+
+#: svg-logo-marquee.php:308
+msgid "Logo Popover Content"
+msgstr "Logo popover inhoud"
+
+#: svg-logo-marquee.php:316
+msgid "Enter the content to show when users hover over this logo."
+msgstr "Voer de inhoud in die getoond wordt wanneer gebruikers over dit logo bewegen."
+
+#: svg-logo-marquee.php:477
+msgid "Show Logos"
+msgstr "Logo's tonen"
+
+#: svg-logo-marquee.php:478
+msgid "Hide Logos"
+msgstr "Logo's verbergen"

@@ -1,13 +1,14 @@
 <?php
 /**
  * Plugin Name: SVG Logo Marquee
+ * Plugin URI: https://miix.dev/wp/svg-logo-marquee
  * Description: Display SVG logos in a seamless marquee
  * Version: 1.0
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author: Fred Klopper
  * Author URI: https://miix.dev
- * Text Domain: laposta-api
+ * Text Domain: svg-logo-marquee
  * Domain Path: /languages
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -32,9 +33,28 @@ if (!defined('ABSPATH')) {
   exit;
 }
 
+// Define plugin constants
 define('SVG_LOGO_MARQUEE_VERSION', '1.0');
+define('SVG_LOGO_MARQUEE_PLUGIN_FILE', __FILE__);
+define('SVG_LOGO_MARQUEE_PLUGIN_BASENAME', plugin_basename(__FILE__));
+define('SVG_LOGO_MARQUEE_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('SVG_LOGO_MARQUEE_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('SVG_LOGO_DEFAULT_LIGHT', '#212529');  // Bootstrap dark color
 define('SVG_LOGO_DEFAULT_DARK', '#ffffff');   // White
+
+/**
+ * Initialize plugin
+ */
+function svg_logo_marquee_init()
+{
+  // Load text domain
+  load_plugin_textdomain(
+    'svg-logo-marquee',
+    false,
+    dirname(SVG_LOGO_MARQUEE_PLUGIN_BASENAME) . '/languages/'
+  );
+}
+add_action('plugins_loaded', 'svg_logo_marquee_init');
 
 // Add instructions
 function add_svg_logo_instructions()
@@ -79,7 +99,17 @@ function svg_marquee_post_type()
     array(
       'labels' => array(
         'name' => __('SVG Logos'),
-        'singular_name' => __('SVG Logo')
+        'singular_name' => __('SVG Logo'),
+        'add_new' => __('Add New Logo'),
+        'add_new_item' => __('Add New Logo'),
+        'edit_item' => __('Edit Logo'),
+        'new_item' => __('New Logo'),
+        'view_item' => __('View Logo'),
+        'search_items' => __('Search Logos'),
+        'not_found' => __('No logos found'),
+        'not_found_in_trash' => __('No logos found in Trash'),
+        'all_items' => __('All Logos'),
+        'menu_name' => __('SVG Logos')
       ),
       'public' => false,
       'show_ui' => true,
