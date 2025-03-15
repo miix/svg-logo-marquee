@@ -296,17 +296,9 @@ function svg_logo_marquee_meta_box_callback($post)
   $svg_code = get_post_meta($post->ID, '_svg_logo_marquee_code', true);
   $light_color = get_post_meta($post->ID, '_svg_logo_marquee_light_color', true);
   $dark_color = get_post_meta($post->ID, '_svg_logo_marquee_dark_color', true);
-  $is_visible = get_post_meta($post->ID, '_svg_logo_marquee_visible', true);
-  $is_visible = $is_visible === '' ? '1' : $is_visible;
 
   wp_nonce_field('svg_logo_marquee_meta_box', 'svg_logo_marquee_meta_box_nonce');
   ?>
-  <p>
-    <label>
-      <input type="checkbox" name="svg_logo_marquee_visible" value="1" <?php checked($is_visible, '1'); ?>>
-      Display this logo in marquee
-    </label>
-  </p>
   <textarea name="svg_logo_marquee_code"
     style="width: 100%; height: 200px;"><?php echo esc_textarea($svg_code); ?></textarea>
   <p>Paste your SVG code here.</p>
@@ -346,6 +338,39 @@ function svg_logo_marquee_is_valid_svg($svg_code)
   return true;
 }
 
+// Add visibility meta box
+function svg_logo_marquee_add_visibility_meta_box()
+{
+  add_meta_box(
+    'svg_logo_marquee_visibility',
+    'Logo Visibility',
+    'svg_logo_marquee_visibility_meta_box_callback',
+    'svg_logo_marquee',
+    'side', // Put it in the sidebar
+    'high' // High priority to place it at the top
+  );
+}
+add_action('add_meta_boxes', 'svg_logo_marquee_add_visibility_meta_box');
+
+function svg_logo_marquee_visibility_meta_box_callback($post)
+{
+  $is_visible = get_post_meta($post->ID, '_svg_logo_marquee_visible', true);
+  $is_visible = $is_visible === '' ? '1' : $is_visible; // Default to visible
+
+  wp_nonce_field('svg_logo_marquee_visibility_meta_box', 'svg_logo_marquee_visibility_meta_box_nonce');
+  ?>
+  <p>
+    <label class="selectit">
+      <input type="checkbox" name="svg_logo_marquee_visible" value="1" <?php checked($is_visible, '1'); ?>>
+      <strong>Display this logo in marquee</strong>
+    </label>
+  </p>
+  <p class="description">
+    Uncheck this option to temporarily hide this logo from all marquees without deleting it.
+  </p>
+  <?php
+}
+
 // Add TinyMCE popover content meta box
 function svg_logo_marquee_add_popover_meta_box()
 {
@@ -374,81 +399,86 @@ function svg_logo_marquee_popover_meta_box_callback($post)
 // Save meta box data
 function svg_logo_marquee_save_meta_box($post_id)
 {
-  if (!isset($_POST['svg_logo_marquee_meta_box_nonce'])) {
-    return;
-  }
-  if (!wp_verify_nonce($_POST['svg_logo_marquee_meta_box_nonce'], 'svg_logo_marquee_meta_box')) {
-    return;
-  }
-  if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-    return;
+  // Check for and verify the main meta box nonce
+  if (
+    isset($_POST['svg_logo_marquee_meta_box_nonce']) &&
+    wp_verify_nonce($_POST['svg_logo_marquee_meta_box_nonce'], 'svg_logo_marquee_meta_box')
+  ) {
+
+    // Save SVG code and colors
+    if (isset($_POST['svg_logo_marquee_code'])) {
+      // Save colors
+      if (isset($_POST['svg_logo_marquee_light_color'])) {
+        update_post_meta($post_id, '_svg_logo_marquee_light_color', sanitize_hex_color($_POST['svg_logo_marquee_light_color']));
+      }
+      if (isset($_POST['svg_logo_marquee_dark_color'])) {
+        update_post_meta($post_id, '_svg_logo_marquee_dark_color', sanitize_hex_color($_POST['svg_logo_marquee_dark_color']));
+      }
+      update_post_meta($post_id, '_svg_logo_marquee_code', wp_kses($_POST['svg_logo_marquee_code'], array(
+        'svg' => array(
+          'xmlns' => array(),
+          'viewBox' => array(),
+          'width' => array(),
+          'height' => array(),
+          'fill' => array(),
+          'class' => array(),
+          'style' => array(),
+          'preserveAspectRatio' => array()
+        ),
+        'path' => array(
+          'd' => array(),
+          'fill' => array(),
+          'stroke' => array(),
+          'stroke-width' => array(),
+          'style' => array()
+        ),
+        'g' => array(
+          'transform' => array(),
+          'style' => array(),
+          'fill' => array()
+        ),
+        'rect' => array(
+          'x' => array(),
+          'y' => array(),
+          'width' => array(),
+          'height' => array(),
+          'fill' => array(),
+          'style' => array()
+        ),
+        'circle' => array(
+          'cx' => array(),
+          'cy' => array(),
+          'r' => array(),
+          'fill' => array(),
+          'style' => array()
+        ),
+        'polygon' => array(
+          'points' => array(),
+          'fill' => array(),
+          'style' => array()
+        )
+      )));
+    }
   }
 
-  // Save visibility status
-  $is_visible = isset($_POST['svg_logo_marquee_visible']) ? '1' : '0';
-  update_post_meta($post_id, '_svg_logo_marquee_visible', $is_visible);
+  // Check for and verify the visibility meta box nonce
+  if (
+    isset($_POST['svg_logo_marquee_visibility_meta_box_nonce']) &&
+    wp_verify_nonce($_POST['svg_logo_marquee_visibility_meta_box_nonce'], 'svg_logo_marquee_visibility_meta_box')
+  ) {
 
-  // Save popover content
+    // Save visibility status
+    $is_visible = isset($_POST['svg_logo_marquee_visible']) ? '1' : '0';
+    update_post_meta($post_id, '_svg_logo_marquee_visible', $is_visible);
+  }
+
+  // The popover content saving remains unchanged
   if (isset($_POST['svg_logo_marquee_popover_content'])) {
     update_post_meta(
       $post_id,
       '_svg_logo_marquee_popover_content',
       wp_kses_post($_POST['svg_logo_marquee_popover_content'])
     );
-  }
-
-  if (isset($_POST['svg_logo_marquee_code'])) {
-    // Save colors
-    if (isset($_POST['svg_logo_marquee_light_color'])) {
-      update_post_meta($post_id, '_svg_logo_marquee_light_color', sanitize_hex_color($_POST['svg_logo_marquee_light_color']));
-    }
-    if (isset($_POST['svg_logo_marquee_dark_color'])) {
-      update_post_meta($post_id, '_svg_logo_marquee_dark_color', sanitize_hex_color($_POST['svg_logo_marquee_dark_color']));
-    }
-    update_post_meta($post_id, '_svg_logo_marquee_code', wp_kses($_POST['svg_logo_marquee_code'], array(
-      'svg' => array(
-        'xmlns' => array(),
-        'viewBox' => array(),
-        'width' => array(),
-        'height' => array(),
-        'fill' => array(),
-        'class' => array(),
-        'style' => array(),
-        'preserveAspectRatio' => array()
-      ),
-      'path' => array(
-        'd' => array(),
-        'fill' => array(),
-        'stroke' => array(),
-        'stroke-width' => array(),
-        'style' => array()
-      ),
-      'g' => array(
-        'transform' => array(),
-        'style' => array(),
-        'fill' => array()
-      ),
-      'rect' => array(
-        'x' => array(),
-        'y' => array(),
-        'width' => array(),
-        'height' => array(),
-        'fill' => array(),
-        'style' => array()
-      ),
-      'circle' => array(
-        'cx' => array(),
-        'cy' => array(),
-        'r' => array(),
-        'fill' => array(),
-        'style' => array()
-      ),
-      'polygon' => array(
-        'points' => array(),
-        'fill' => array(),
-        'style' => array()
-      )
-    )));
   }
 }
 add_action('save_post', 'svg_logo_marquee_save_meta_box');
