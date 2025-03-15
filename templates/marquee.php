@@ -26,8 +26,8 @@ function process_svg($svg_code, $size, $logo_id, $global_light_color = null, $gl
 
     try {
         // Get individual logo colors if set, unless global colors are provided
-        $logo_light_color = $global_light_color ?: (get_post_meta($logo_id, '_svg_light_color', true) ?: SVG_LOGO_DEFAULT_LIGHT);
-        $logo_dark_color = $global_dark_color ?: (get_post_meta($logo_id, '_svg_dark_color', true) ?: SVG_LOGO_DEFAULT_DARK);
+        $logo_light_color = $global_light_color ?: (get_post_meta($logo_id, '_svg_logo_marquee_light_color', true) ?: SVG_LOGO_MARQUEE_DEFAULT_LIGHT);
+        $logo_dark_color = $global_dark_color ?: (get_post_meta($logo_id, '_svg_logo_marquee_dark_color', true) ?: SVG_LOGO_MARQUEE_DEFAULT_DARK);
 
         // Convert size to pixels if it's not already
         $size_px = preg_replace('/[^0-9.]/', '', $size);
@@ -84,7 +84,7 @@ function process_svg($svg_code, $size, $logo_id, $global_light_color = null, $gl
         $wrapper_template = '<div class="svg-logo-wrapper" style="--logo-light-color: %s; --logo-dark-color: %s;" role="img" aria-label="%s">%s';
 
         // Add popover if present
-        $popover_content = get_post_meta($logo_id, '_svg_popover_content', true);
+        $popover_content = get_post_meta($logo_id, '_svg_logo_marquee_popover_content', true);
         if (!empty($popover_content)) {
             $wrapper_template = '<div class="svg-logo-wrapper" style="--logo-light-color: %s; --logo-dark-color: %s;" role="img" aria-label="%s" data-bs-toggle="popover" data-bs-html="true" data-bs-content="%s">%s<i class="bi bi-info-circle-fill info-icon text-primary"></i>';
             $wrapper = sprintf(
@@ -116,7 +116,7 @@ function process_svg($svg_code, $size, $logo_id, $global_light_color = null, $gl
 // Process SVGs once
 $processed_logos = array();
 foreach ($logos as $logo) {
-    $svg_code = get_post_meta($logo->ID, '_svg_code', true);
+    $svg_code = get_post_meta($logo->ID, '_svg_logo_marquee_code', true);
     if (!empty($svg_code)) {
         $processed_logos[] = process_svg($svg_code, $size, $logo->ID, $light_color, $dark_color);
     }
