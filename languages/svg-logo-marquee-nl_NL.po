@@ -12,92 +12,124 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.5\n"
 
-#: svg-logo-marquee.php:102
+msgid "Shortcode Usage:"
+msgstr "Gebruik van shortcode:"
+
+msgid "Basic usage with default settings"
+msgstr "Basisgebruik met standaardinstellingen"
+
+msgid "Options:"
+msgstr "Opties:"
+
+msgid "Set logo size (default: 100px)"
+msgstr "Stel logogrootte in (standaard: 100px)"
+
+msgid "Animation duration in milliseconds (default: 20000ms = 20 seconds)"
+msgstr "Animatieduur in milliseconden (standaard: 20000ms = 20 seconden)"
+
+msgid "Override all logo colors in light mode (default: #212529)"
+msgstr "Overschrijf alle logokleuren in lichte modus (standaard: #212529)"
+
+msgid "Override all logo colors in dark mode (default: #ffffff)"
+msgstr "Overschrijf alle logokleuren in donkere modus (standaard: #ffffff)"
+
+msgid "Display logos in random order (default: false)"
+msgstr "Toon logo's in willekeurige volgorde (standaard: false)"
+
+msgid "Pause animation on hover (default: true)"
+msgstr "Pauzeer animatie bij hover (standaard: true)"
+
+msgid "Reverse animation direction (default: false)"
+msgstr "Keer animatierichting om (standaard: false)"
+
+msgid "Space between logos in pixels (default: 40)"
+msgstr "Ruimte tussen logo's in pixels (standaard: 40)"
+
+msgid "Duplicate logos for seamless scrolling (default: true)"
+msgstr "Dupliceer logo's voor naadloos scrollen (standaard: true)"
+
+msgid "Show only logos from specific category (comma-separated for multiple)"
+msgstr "Toon alleen logo's uit specifieke categorie (komma-gescheiden voor meerdere)"
+
+msgid "Example:"
+msgstr "Voorbeeld:"
+
+msgid "To add a new logo, give it a title and paste your SVG code in the box below."
+msgstr "Om een nieuw logo toe te voegen, geef het een titel en plak je SVG-code in het vak hieronder."
+
+msgid "SVG Code"
+msgstr "SVG-code"
+
+msgid "Paste your SVG code here."
+msgstr "Plak hier je SVG-code."
+
+msgid "Light Mode Color:"
+msgstr "Lichte modus kleur:"
+
+msgid "Dark Mode Color:"
+msgstr "Donkere modus kleur:"
+
+msgid "Display this logo in marquee"
+msgstr "Logo weergeven in de marquee"
+
+msgid "Uncheck this option to temporarily hide this logo from all marquees without deleting it."
+msgstr "Vink deze optie uit om dit logo tijdelijk te verbergen uit alle marquees zonder het te verwijderen."
+
+msgid "Enter the content to show when users hover over this logo."
+msgstr "Voer de inhoud in die getoond wordt wanneer gebruikers over dit logo bewegen."
+
 msgid "SVG Logos"
 msgstr "SVG logo's"
 
-#: svg-logo-marquee.php:103
 msgid "SVG Logo"
 msgstr "SVG logo"
 
-#: svg-logo-marquee.php:104
 msgid "Add New Logo"
 msgstr "Nieuw logo toevoegen"
 
-#: svg-logo-marquee.php:106
 msgid "Edit Logo"
 msgstr "Logo bewerken"
 
-#: svg-logo-marquee.php:107
 msgid "New Logo"
 msgstr "Nieuw logo"
 
-#: svg-logo-marquee.php:108
 msgid "View Logo"
 msgstr "Logo bekijken"
 
-#: svg-logo-marquee.php:109
 msgid "Search Logos"
 msgstr "Logo's zoeken"
 
-#: svg-logo-marquee.php:110
 msgid "No logos found"
 msgstr "Geen logo's gevonden"
 
-#: svg-logo-marquee.php:111
 msgid "No logos found in Trash"
 msgstr "Geen logo's gevonden in prullenbak"
 
-#: svg-logo-marquee.php:112
 msgid "All Logos"
 msgstr "Alle logo's"
 
-#: svg-logo-marquee.php:113
-msgid "Menu Name"
-msgstr "Menunaam"
-
-#: svg-logo-marquee.php:137
 msgid "Category"
 msgstr "Categorie"
 
-#: svg-logo-marquee.php:156
 msgid "All Categories"
 msgstr "Alle categorieën"
 
-#: svg-logo-marquee.php:530
 msgid "Visibility updated for %s logo."
 msgid_plural "Visibility updated for %s logos."
 msgstr[0] "Zichtbaarheid bijgewerkt voor %s logo."
 msgstr[1] "Zichtbaarheid bijgewerkt voor %s logo's."
 
-#: svg-logo-marquee.php:265
-msgid "Display this logo in marquee"
-msgstr "Toon dit logo in de marquee"
+msgid "Logo Visibility"
+msgstr "Logo zichtbaarheid"
 
-#: svg-logo-marquee.php:269
-msgid "Paste your SVG code here."
-msgstr "Plak hier je SVG-code."
-
-#: svg-logo-marquee.php:272
-msgid "Light Mode Color:"
-msgstr "Lichte modus kleur:"
-
-#: svg-logo-marquee.php:277
-msgid "Dark Mode Color:"
-msgstr "Donkere modus kleur:"
-
-#: svg-logo-marquee.php:308
 msgid "Logo Popover Content"
 msgstr "Logo popover inhoud"
 
-#: svg-logo-marquee.php:316
-msgid "Enter the content to show when users hover over this logo."
-msgstr "Voer de inhoud in die getoond wordt wanneer gebruikers over dit logo bewegen."
-
-#: svg-logo-marquee.php:477
 msgid "Show Logos"
 msgstr "Logo's tonen"
 
-#: svg-logo-marquee.php:478
 msgid "Hide Logos"
 msgstr "Logo's verbergen"
+
+msgid "Visible"
+msgstr "Zichtbaar"

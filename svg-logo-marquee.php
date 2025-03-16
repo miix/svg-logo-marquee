@@ -63,29 +63,54 @@ function svg_logo_marquee_add_instructions()
   if ($screen->post_type === 'svg_logo_marquee') {
     if ($screen->base === 'edit') {
       // Show shortcode instructions on listing page
-      echo '<div class="notice notice-info">
-                <h3>Shortcode Usage:</h3>
-                <p><code>[svg_logo_marquee]</code> - Basic usage with default settings</p>
-                <p>Options:</p>
-                <ul>
-                    <li><code>size="80"</code> - Set logo size (default: 100px)</li>
-                    <li><code>speed="10000"</code> - Animation duration in milliseconds (default: 20000ms = 20 seconds)</li>
-                    <li><code>light_color="#333333"</code> - Override all logo colors in light mode (default: #212529)</li>
-                    <li><code>dark_color="#dddddd"</code> - Override all logo colors in dark mode (default: #ffffff)</li>
-                    <li><code>random="true"</code> - Display logos in random order (default: false)</li>
-                    <li><code>pause_on_hover="false"</code> - Pause animation on hover (default: true)</li>
-                    <li><code>reverse="true"</code> - Reverse animation direction (default: false)</li>
-                    <li><code>gap="20"</code> - Space between logos in pixels (default: 40)</li>
-                    <li><code>duplicate="false"</code> - Duplicate logos for seamless scrolling (default: true)</li>
-                    <li><code>category="category-slug"</code> - Show only logos from specific category (comma-separated for multiple)</li>
-                </ul>
-                <p>Example: <code>[svg_logo_marquee size="80" speed="10000" category="clients,partners"]</code></p>
-            </div>';
+      ?>
+      <div class="notice notice-info">
+        <h3><?php esc_html_e('Shortcode Usage:', 'svg-logo-marquee'); ?></h3>
+        <p><code>[svg_logo_marquee]</code> - <?php esc_html_e('Basic usage with default settings', 'svg-logo-marquee'); ?></p>
+        <p><?php esc_html_e('Options:', 'svg-logo-marquee'); ?></p>
+        <ul>
+          <li><code>size="80"</code> - <?php esc_html_e('Set logo size (default: 100px)', 'svg-logo-marquee'); ?></li>
+          <li><code>speed="10000"</code> -
+            <?php esc_html_e('Animation duration in milliseconds (default: 20000ms = 20 seconds)', 'svg-logo-marquee'); ?>
+          </li>
+          <li><code>light_color="#333333"</code> -
+            <?php esc_html_e('Override all logo colors in light mode (default: #212529)', 'svg-logo-marquee'); ?>
+          </li>
+          <li><code>dark_color="#dddddd"</code> -
+            <?php esc_html_e('Override all logo colors in dark mode (default: #ffffff)', 'svg-logo-marquee'); ?>
+          </li>
+          <li><code>random="true"</code> -
+            <?php esc_html_e('Display logos in random order (default: false)', 'svg-logo-marquee'); ?>
+          </li>
+          <li><code>pause_on_hover="false"</code> -
+            <?php esc_html_e('Pause animation on hover (default: true)', 'svg-logo-marquee'); ?>
+          </li>
+          <li><code>reverse="true"</code> -
+            <?php esc_html_e('Reverse animation direction (default: false)', 'svg-logo-marquee'); ?>
+          </li>
+          <li><code>gap="20"</code> - <?php esc_html_e('Space between logos in pixels (default: 40)', 'svg-logo-marquee'); ?>
+          </li>
+          <li><code>duplicate="false"</code> -
+            <?php esc_html_e('Duplicate logos for seamless scrolling (default: true)', 'svg-logo-marquee'); ?>
+          </li>
+          <li><code>category="category-slug"</code> -
+            <?php esc_html_e('Show only logos from specific category (comma-separated for multiple)', 'svg-logo-marquee'); ?>
+          </li>
+        </ul>
+        <p><?php esc_html_e('Example:', 'svg-logo-marquee'); ?>
+          <code>[svg_logo_marquee size="80" speed="10000" category="clients,partners"]</code>
+        </p>
+      </div>
+      <?php
     } else {
       // Show only logo instructions on add/edit page
-      echo '<div class="notice notice-info">
-                    <p>To add a new logo, give it a title and paste your SVG code in the box below.</p>
-                </div>';
+      ?>
+      <div class="notice notice-info">
+        <p>
+          <?php esc_html_e('To add a new logo, give it a title and paste your SVG code in the box below.', 'svg-logo-marquee'); ?>
+        </p>
+      </div>
+      <?php
     }
   }
 }
@@ -98,18 +123,18 @@ function svg_logo_marquee_post_type()
     'svg_logo_marquee',
     array(
       'labels' => array(
-        'name' => __('SVG Logos'),
-        'singular_name' => __('SVG Logo'),
-        'add_new' => __('Add New Logo'),
-        'add_new_item' => __('Add New Logo'),
-        'edit_item' => __('Edit Logo'),
-        'new_item' => __('New Logo'),
-        'view_item' => __('View Logo'),
-        'search_items' => __('Search Logos'),
-        'not_found' => __('No logos found'),
+        'name' => __('SVG Logos', 'svg-logo-marquee'),
+        'singular_name' => __('SVG Logo', 'svg-logo-marquee'),
+        'add_new' => __('Add New Logo', 'svg-logo-marquee'),
+        'add_new_item' => __('Add New Logo', 'svg-logo-marquee'),
+        'edit_item' => __('Edit Logo', 'svg-logo-marquee'),
+        'new_item' => __('New Logo', 'svg-logo-marquee'),
+        'view_item' => __('View Logo', 'svg-logo-marquee'),
+        'search_items' => __('Search Logos', 'svg-logo-marquee'),
+        'not_found' => __('No logos found', 'svg-logo-marquee'),
         'not_found_in_trash' => __('No logos found in Trash'),
-        'all_items' => __('All Logos'),
-        'menu_name' => __('SVG Logos')
+        'all_items' => __('All Logos', 'svg-logo-marquee'),
+        'menu_name' => __('SVG Logos', 'svg-logo-marquee')
       ),
       'public' => false,
       'show_ui' => true,
@@ -124,14 +149,13 @@ function svg_logo_marquee_post_type()
 add_action('init', 'svg_logo_marquee_post_type');
 
 // Add sorting support
-// Add visibility column to admin list
 function svg_logo_marquee_add_columns($columns)
 {
   $new_columns = array();
   foreach ($columns as $key => $title) {
     if ($key === 'title') { // Add after title
       $new_columns[$key] = $title;
-      $new_columns['visibility'] = 'Visible';
+      $new_columns['visibility'] = __('Visible', 'svg-logo-marquee');
     } else {
       $new_columns[$key] = $title;
     }
@@ -158,7 +182,7 @@ function svg_logo_marquee_category_taxonomy()
     'svg_logo_marquee_category',
     'svg_logo_marquee',
     array(
-      'label' => __('Category'),
+      'label' => __('Category', 'svg-logo-marquee'),
       'hierarchical' => true,
       'show_ui' => true,
       'show_admin_column' => true,
@@ -284,9 +308,11 @@ function svg_logo_marquee_add_svg_meta_box()
 {
   add_meta_box(
     'svg_logo_marquee_code',
-    'SVG Code',
+    __('SVG Code', 'svg-logo-marquee'),
     'svg_logo_marquee_meta_box_callback',
-    'svg_logo_marquee'
+    'svg_logo_marquee',
+    'normal',
+    'high'
   );
 }
 add_action('add_meta_boxes', 'svg_logo_marquee_add_svg_meta_box');
@@ -301,15 +327,15 @@ function svg_logo_marquee_meta_box_callback($post)
   ?>
   <textarea name="svg_logo_marquee_code"
     style="width: 100%; height: 200px;"><?php echo esc_textarea($svg_code); ?></textarea>
-  <p>Paste your SVG code here.</p>
+  <p><?php esc_html_e('Paste your SVG code here.', 'svg-logo-marquee'); ?></p>
 
   <p>
-    <label for="svg_logo_marquee_light_color">Light Mode Color:</label>
+    <label for="svg_logo_marquee_light_color"><?php esc_html_e('Light Mode Color:', 'svg-logo-marquee'); ?></label>
     <input type="text" class="color-picker" id="svg_logo_marquee_light_color" name="svg_logo_marquee_light_color"
       value="<?php echo esc_attr($light_color ?: SVG_LOGO_MARQUEE_DEFAULT_LIGHT); ?>">
   </p>
   <p>
-    <label for="svg_logo_marquee_dark_color">Dark Mode Color:</label>
+    <label for="svg_logo_marquee_dark_color"><?php esc_html_e('Dark Mode Color:', 'svg-logo-marquee'); ?></label>
     <input type="text" class="color-picker" id="svg_logo_marquee_dark_color" name="svg_logo_marquee_dark_color"
       value="<?php echo esc_attr($dark_color ?: SVG_LOGO_MARQUEE_DEFAULT_DARK); ?>">
   </p>
@@ -366,7 +392,7 @@ function svg_logo_marquee_visibility_meta_box_callback($post)
     </label>
   </p>
   <p class="description">
-    Uncheck this option to temporarily hide this logo from all marquees without deleting it.
+    <?php _e('Uncheck this option to temporarily hide this logo from all marquees without deleting it.', 'svg-logo-marquee'); ?>
   </p>
   <?php
 }
@@ -376,11 +402,9 @@ function svg_logo_marquee_add_popover_meta_box()
 {
   add_meta_box(
     'svg_logo_marquee_popover',
-    'Logo Popover Content',
+    __('Logo Popover Content', 'svg-logo-marquee'),
     'svg_logo_marquee_popover_meta_box_callback',
     'svg_logo_marquee',
-    'normal',
-    'high'
   );
 }
 add_action('add_meta_boxes', 'svg_logo_marquee_add_popover_meta_box');
@@ -393,7 +417,7 @@ function svg_logo_marquee_popover_meta_box_callback($post)
     'textarea_rows' => 5,
     'teeny' => true
   ));
-  echo '<p>Enter the content to show when users hover over this logo.</p>';
+  echo '<p>' . esc_html__('Enter the content to show when users hover over this logo.', 'svg-logo-marquee') . '</p>';
 }
 
 // Save meta box data
@@ -524,7 +548,7 @@ function svg_logo_marquee_shortcode($atts)
     'reverse' => 'false',
     'gap' => '40',
     'duplicate' => 'true',
-    'category' => '' // Add category parameter
+    'category' => ''
   ), $atts);
 
   $args = array(
