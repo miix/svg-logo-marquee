@@ -119,8 +119,8 @@ msgid_plural "Visibility updated for %s logos."
 msgstr[0] "Zichtbaarheid bijgewerkt voor %s logo."
 msgstr[1] "Zichtbaarheid bijgewerkt voor %s logo's."
 
-msgid "Logo Visibility"
-msgstr "Logo zichtbaarheid"
+msgid "Visibility"
+msgstr "Zichtbaarheid"
 
 msgid "Logo Popover Content"
 msgstr "Logo popover inhoud"

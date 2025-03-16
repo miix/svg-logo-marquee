@@ -369,7 +369,7 @@ function svg_logo_marquee_add_visibility_meta_box()
 {
   add_meta_box(
     'svg_logo_marquee_visibility',
-    'Logo Visibility',
+    __('Visibility', 'svg-logo-marquee'),
     'svg_logo_marquee_visibility_meta_box_callback',
     'svg_logo_marquee',
     'side', // Put it in the sidebar
@@ -388,7 +388,7 @@ function svg_logo_marquee_visibility_meta_box_callback($post)
   <p>
     <label class="selectit">
       <input type="checkbox" name="svg_logo_marquee_visible" value="1" <?php checked($is_visible, '1'); ?>>
-      <strong>Display this logo in marquee</strong>
+      <strong><?php esc_html_e('Display this logo in marquee', 'svg-logo-marquee'); ?></strong>
     </label>
   </p>
   <p class="description">
