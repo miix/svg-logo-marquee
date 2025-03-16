@@ -21,6 +21,12 @@ msgstr "Basisgebruik met standaardinstellingen"
 msgid "Options:"
 msgstr "Opties:"
 
+msgid "Example SVG format:"
+msgstr "Voorbeeld SVG-formaat:"
+
+msgid "Note: Make sure your SVG includes the xmlns attribute and uses path elements for compatibility."
+msgstr "Opmerking: Zorg ervoor dat je SVG het xmlns-attribuut bevat en path-elementen gebruikt voor compatibiliteit."
+
 msgid "Set logo size (default: 100px)"
 msgstr "Stel logogrootte in (standaard: 100px)"
 

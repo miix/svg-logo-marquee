@@ -103,11 +103,22 @@ function svg_logo_marquee_add_instructions()
       </div>
       <?php
     } else {
-      // Show only logo instructions on add/edit page
+      // Show SVG format instructions on add/edit page
       ?>
       <div class="notice notice-info">
         <p>
           <?php esc_html_e('To add a new logo, give it a title and paste your SVG code in the box below.', 'svg-logo-marquee'); ?>
+        </p>
+        <p>
+          <?php esc_html_e('Example SVG format:', 'svg-logo-marquee'); ?>
+        </p>
+        <pre style="background: #f8f8f8; padding: 10px; overflow: auto; max-height: 150px;"><code>&lt;svg xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;g&gt;
+    &lt;path d="M10,10 L50,10 L50,50 L10,50 Z" /&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;</code></pre>
+        <p>
+          <?php esc_html_e('Note: Make sure your SVG includes the xmlns attribute and uses path elements for compatibility.', 'svg-logo-marquee'); ?>
         </p>
       </div>
       <?php
