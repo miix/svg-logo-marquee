@@ -26,6 +26,6 @@ Display SVG logos in a seamless marquee.
 
 == Frequently Asked Questions ==
 
-= Does this plugin use the WordPressw media library? =
+= Does this plugin use the WordPress media library? =
 
 No, SVG logos are directly stored as code.
