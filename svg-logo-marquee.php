@@ -206,7 +206,7 @@ function svg_logo_marquee_add_taxonomy_filters()
     $tax_obj = get_taxonomy($tax_slug);
 
     wp_dropdown_categories(array(
-      'show_option_all' => __("All Categories"),
+      'show_option_all' => __("All Categories", 'svg-logo-marquee'),
       'taxonomy' => $tax_slug,
       'name' => $tax_slug,
       'orderby' => 'name',
@@ -604,8 +604,8 @@ add_shortcode('svg_logo_marquee', 'svg_logo_marquee_shortcode');
 // Add bulk actions
 function svg_logo_marquee_add_bulk_actions($bulk_actions)
 {
-  $bulk_actions['show_logos'] = 'Show Logos';
-  $bulk_actions['hide_logos'] = 'Hide Logos';
+  $bulk_actions['show_logos'] = __('Show Logos', 'svg-logo-marquee');
+  $bulk_actions['hide_logos'] = __('Hide Logos', 'svg-logo-marquee');
   return $bulk_actions;
 }
 add_filter('bulk_actions-edit-svg_logo_marquee', 'svg_logo_marquee_add_bulk_actions');
