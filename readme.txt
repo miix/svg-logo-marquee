@@ -3,7 +3,7 @@ Contributors: miix
 Tags: svg, logo, marquee, animation
 Requires at least: 5.0
 Tested up to: 6.7.2
-Stable tag: 1.0.0
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -80,6 +80,9 @@ Yes, you can create categories and assign logos to them, then use the category p
 Yes, you can set different colors for light and dark mode, either globally through the shortcode or individually for each logo.
 
 == Changelog ==
+
+= 1.0.2 =
+* Updated the version number
 
 = 1.0.1 =
 * Removed deprecated migration functionality
