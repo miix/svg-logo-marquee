@@ -81,5 +81,10 @@ Yes, you can set different colors for light and dark mode, either globally throu
 
 == Changelog ==
 
+= 1.0.1 =
+* Removed deprecated migration functionality
+* Code optimization and cleanup
+* Added "Manage Logos" link to plugin page
+
 = 1.0.0 =
 * Initial release

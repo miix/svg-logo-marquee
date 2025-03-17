@@ -113,10 +113,10 @@ function svg_logo_marquee_add_instructions()
           <?php esc_html_e('Example SVG format:', 'svg-logo-marquee'); ?>
         </p>
         <pre style="background: #f8f8f8; padding: 10px; overflow: auto; max-height: 150px;"><code>&lt;svg xmlns="http://www.w3.org/2000/svg"&gt;
-  &lt;g&gt;
-    &lt;path d="M10,10 L50,10 L50,50 L10,50 Z" /&gt;
-  &lt;/g&gt;
-&lt;/svg&gt;</code></pre>
+              &lt;g&gt;
+                &lt;path d="M10,10 L50,10 L50,50 L10,50 Z" /&gt;
+              &lt;/g&gt;
+            &lt;/svg&gt;</code></pre>
         <p>
           <?php esc_html_e('Note: Make sure your SVG includes the xmlns attribute and uses path elements for compatibility.', 'svg-logo-marquee'); ?>
         </p>
@@ -698,151 +698,18 @@ function svg_logo_marquee_uninstall()
   delete_option('svg_logo_marquee_settings');
 }
 
-// No activation setup needed since files are distributed with the plugin
-
 /**
- * Run a one-time migration to update existing data to the new naming convention
+ * Add action link to plugin page
  */
-function svg_logo_marquee_migrate_data()
-{
-  global $wpdb;
-
-  // Start transaction to ensure data integrity
-  $wpdb->query('START TRANSACTION');
-
-  try {
-    // 1. Update post type
-    $wpdb->query("
-          UPDATE {$wpdb->posts} 
-          SET post_type = 'svg_logo_marquee' 
-          WHERE post_type = 'svg_logo'
-      ");
-
-    // 2. Get all posts that need meta updates
-    $posts = $wpdb->get_col("
-          SELECT ID FROM {$wpdb->posts} 
-          WHERE post_type = 'svg_logo_marquee'
-      ");
-
-    if (!empty($posts)) {
-      // Define meta keys to migrate
-      $meta_keys = array(
-        '_svg_code' => '_svg_logo_marquee_code',
-        '_svg_light_color' => '_svg_logo_marquee_light_color',
-        '_svg_dark_color' => '_svg_logo_marquee_dark_color',
-        '_svg_visible' => '_svg_logo_marquee_visible',
-        '_svg_popover_content' => '_svg_logo_marquee_popover_content'
-      );
-
-      // Process each post
-      foreach ($posts as $post_id) {
-        foreach ($meta_keys as $old_key => $new_key) {
-          // Get the old meta value
-          $meta_value = get_post_meta($post_id, $old_key, true);
-
-          // Only proceed if we have a value
-          if ($meta_value !== '') {
-            // Add the new meta key
-            update_post_meta($post_id, $new_key, $meta_value);
-
-            // Delete the old meta key
-            delete_post_meta($post_id, $old_key);
-          }
-        }
-      }
-    }
-
-    // 3. Update term taxonomy
-    $wpdb->query("
-          UPDATE {$wpdb->term_taxonomy} 
-          SET taxonomy = 'svg_logo_marquee_category' 
-          WHERE taxonomy = 'svg_logo_category'
-      ");
-
-    // 4. Update options if needed
-    $old_options = get_option('svg_logo_settings');
-    if ($old_options) {
-      update_option('svg_logo_marquee_settings', $old_options);
-      delete_option('svg_logo_settings');
-    }
-
-    // Commit the transaction
-    $wpdb->query('COMMIT');
-
-    // Add an admin notice to inform about successful migration
-    add_action('admin_notices', function () {
-      echo '<div class="notice notice-success"><p>SVG Logo Marquee data has been successfully migrated to the new naming convention.</p></div>';
-    });
-
-    return true;
-  } catch (Exception $e) {
-    // Rollback the transaction if something went wrong
-    $wpdb->query('ROLLBACK');
-
-    // Log error or show admin notice
-    add_action('admin_notices', function () use ($e) {
-      echo '<div class="notice notice-error"><p>Error migrating SVG Logo Marquee data: ' . esc_html($e->getMessage()) . '</p></div>';
-    });
-
-    return false;
-  }
-}
-
-/**
- * Add migration button to plugin page
- */
-function svg_logo_marquee_add_migration_button($links)
-{
-  // Add migration link
-  $migration_link = '<a href="' . wp_nonce_url(admin_url('admin.php?page=svg_logo_marquee_migrate'), 'svg_logo_marquee_migrate_nonce') . '">Migrate Data</a>';
-  array_unshift($links, $migration_link);
+function svg_logo_marquee_add_action_links($links) {
+  // Add logos link
+  $logos_link = '<a href="' . admin_url('edit.php?post_type=svg_logo_marquee') . '">' . __('Manage Logos', 'svg-logo-marquee') . '</a>';
+  
+  // Insert at the beginning of the array
+  array_unshift($links, $logos_link);
+  
   return $links;
 }
-add_filter('plugin_action_links_' . SVG_LOGO_MARQUEE_PLUGIN_BASENAME, 'svg_logo_marquee_add_migration_button');
+add_filter('plugin_action_links_' . SVG_LOGO_MARQUEE_PLUGIN_BASENAME, 'svg_logo_marquee_add_action_links');
 
-/**
- * Register admin page for migration
- */
-function svg_logo_marquee_register_migration_page()
-{
-  add_submenu_page(
-    null, // Hidden from menu
-    'Migrate SVG Logo Data',
-    'Migrate SVG Logo Data',
-    'manage_options',
-    'svg_logo_marquee_migrate',
-    'svg_logo_marquee_migration_page_callback'
-  );
-}
-add_action('admin_menu', 'svg_logo_marquee_register_migration_page');
-
-/**
- * Migration page callback
- */
-function svg_logo_marquee_migration_page_callback()
-{
-  // Check nonce
-  if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'svg_logo_marquee_migrate_nonce')) {
-    wp_die('Security check failed');
-  }
-
-  // Check capabilities
-  if (!current_user_can('manage_options')) {
-    wp_die('You do not have sufficient permissions to access this page.');
-  }
-
-  // Run the migration
-  $result = svg_logo_marquee_migrate_data();
-
-  echo '<div class="wrap">';
-  echo '<h1>SVG Logo Marquee Data Migration</h1>';
-
-  if ($result) {
-    echo '<div class="notice notice-success"><p>Migration completed successfully!</p></div>';
-  } else {
-    echo '<div class="notice notice-error"><p>Migration failed. Please check the error log for more details.</p></div>';
-  }
-
-  echo '<p><a href="' . admin_url('edit.php?post_type=svg_logo_marquee') . '" class="button button-primary">Return to SVG Logos</a></p>';
-  echo '</div>';
-}
+// No activation setup needed since files are distributed with the plugin
