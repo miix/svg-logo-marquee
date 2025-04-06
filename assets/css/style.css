@@ -56,6 +56,17 @@
   display: inline-block;
 }
 
+/* Link styling */
+.svg-logo-link {
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.svg-logo-link:hover {
+  transform: scale(1.05);
+}
+
 /* Info icon styles */
 .info-icon {
   position: absolute;

@@ -80,32 +80,57 @@ function process_svg($svg_code, $size, $logo_id, $global_light_color = null, $gl
         // Get logo title for accessibility
         $logo_title = get_the_title($logo_id);
 
-        // Base wrapper with ARIA attributes
-        $wrapper_template = '<div class="svg-logo-wrapper" style="--logo-light-color: %s; --logo-dark-color: %s;" role="img" aria-label="%s">%s';
-
-        // Add popover if present
+        // Get interaction type and related data
+        $interaction_type = get_post_meta($logo_id, '_svg_logo_marquee_interaction_type', true) ?: 'popover';
+        $logo_url = get_post_meta($logo_id, '_svg_logo_marquee_url', true);
+        $logo_target = get_post_meta($logo_id, '_svg_logo_marquee_url_target', true) ?: '_self';
         $popover_content = get_post_meta($logo_id, '_svg_logo_marquee_popover_content', true);
-        if (!empty($popover_content)) {
-            $wrapper_template = '<div class="svg-logo-wrapper" style="--logo-light-color: %s; --logo-dark-color: %s;" role="img" aria-label="%s" data-bs-toggle="popover" data-bs-html="true" data-bs-content="%s">%s<i class="bi bi-info-circle-fill info-icon text-primary"></i>';
+        
+        // Base wrapper with common attributes
+        $base_style = sprintf('--logo-light-color: %s; --logo-dark-color: %s;', 
+            esc_attr($logo_light_color), 
+            esc_attr($logo_dark_color)
+        );
+        
+        // Handle different interaction types
+        if ($interaction_type === 'link' && !empty($logo_url)) {
+            // Use link
+            $wrapper_template = '<a href="%s" target="%s" rel="noopener" class="svg-logo-wrapper svg-logo-link" style="%s" aria-label="%s">%s</a>';
             $wrapper = sprintf(
                 $wrapper_template,
-                esc_attr($logo_light_color),
-                esc_attr($logo_dark_color),
+                esc_url($logo_url),
+                esc_attr($logo_target),
+                $base_style,
+                esc_attr($logo_title),
+                $svg_code
+            );
+        } else if (!empty($popover_content)) {
+            // Use popover
+            $wrapper_template = '<div class="svg-logo-wrapper" style="%s" role="img" aria-label="%s" data-bs-toggle="popover" data-bs-html="true" data-bs-content="%s">%s<i class="bi bi-info-circle-fill info-icon text-primary"></i>';
+            $wrapper = sprintf(
+                $wrapper_template,
+                $base_style,
                 esc_attr($logo_title),
                 esc_attr($popover_content),
                 $svg_code
             );
         } else {
+            // No interaction
+            $wrapper_template = '<div class="svg-logo-wrapper" style="%s" role="img" aria-label="%s">%s';
             $wrapper = sprintf(
                 $wrapper_template,
-                esc_attr($logo_light_color),
-                esc_attr($logo_dark_color),
+                $base_style,
                 esc_attr($logo_title),
                 $svg_code
             );
         }
 
-        return $wrapper . '</div>';
+        // Only add closing div tag when the wrapper is a div (not for links)
+        if ($interaction_type !== 'link' || empty($logo_url)) {
+            $wrapper .= '</div>';
+        }
+        
+        return $wrapper;
 
     } catch (Exception $e) {
         // error_log(sprintf('Error processing SVG for logo ID %d: %s', $logo_id, $e->getMessage()));
@@ -133,8 +158,6 @@ $marquee_style = sprintf(
     esc_attr($gap),
     $reverse === 'true' ? '--marquee-direction: reverse;' : ''
 );
-
-// In your template:
 
 // Add pause on hover class to container if enabled
 $container_class = 'svg-marquee-container';

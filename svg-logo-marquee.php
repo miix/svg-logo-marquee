@@ -3,7 +3,7 @@
  * Plugin Name: SVG Logo Marquee
  * Plugin URI: https://miix.dev/wp/svg-logo-marquee
  * Description: Display SVG logos in a seamless marquee
- * Version: 1.0
+ * Version: 1.1.0
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author: Fred Klopper
@@ -34,7 +34,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('SVG_LOGO_MARQUEE_VERSION', '1.0');
+define('SVG_LOGO_MARQUEE_VERSION', '1.1.0');
 define('SVG_LOGO_MARQUEE_PLUGIN_FILE', __FILE__);
 define('SVG_LOGO_MARQUEE_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('SVG_LOGO_MARQUEE_PLUGIN_DIR', plugin_dir_path(__FILE__));
@@ -108,6 +108,9 @@ function svg_logo_marquee_add_instructions()
       <div class="notice notice-info">
         <p>
           <?php esc_html_e('To add a new logo, give it a title and paste your SVG code in the box below.', 'svg-logo-marquee'); ?>
+        </p>
+        <p>
+          <?php esc_html_e('Each logo can either show a popover with content when hovered, or link to a URL when clicked.', 'svg-logo-marquee'); ?>
         </p>
         <p>
           <?php esc_html_e('Example SVG format:', 'svg-logo-marquee'); ?>
@@ -408,12 +411,12 @@ function svg_logo_marquee_visibility_meta_box_callback($post)
   <?php
 }
 
-// Add TinyMCE popover content meta box
+// Add meta box for logo interaction (popover/link)
 function svg_logo_marquee_add_popover_meta_box()
 {
   add_meta_box(
     'svg_logo_marquee_popover',
-    __('Logo Popover Content', 'svg-logo-marquee'),
+    __('Logo Interaction', 'svg-logo-marquee'),
     'svg_logo_marquee_popover_meta_box_callback',
     'svg_logo_marquee',
   );
@@ -423,12 +426,69 @@ add_action('add_meta_boxes', 'svg_logo_marquee_add_popover_meta_box');
 function svg_logo_marquee_popover_meta_box_callback($post)
 {
   $popover_content = get_post_meta($post->ID, '_svg_logo_marquee_popover_content', true);
-  wp_editor($popover_content, 'svg_logo_marquee_popover_content', array(
-    'media_buttons' => false,
-    'textarea_rows' => 5,
-    'teeny' => true
-  ));
-  echo '<p>' . esc_html__('Enter the content to show when users hover over this logo.', 'svg-logo-marquee') . '</p>';
+  $logo_url = get_post_meta($post->ID, '_svg_logo_marquee_url', true);
+  $logo_target = get_post_meta($post->ID, '_svg_logo_marquee_url_target', true) ?: '_self';
+  $interaction_type = get_post_meta($post->ID, '_svg_logo_marquee_interaction_type', true) ?: 'popover';
+  
+  // Interaction type selector
+  ?>
+  <div style="margin-bottom: 15px;">
+    <label style="font-weight: bold;"><?php esc_html_e('Logo Interaction:', 'svg-logo-marquee'); ?></label>
+    <div style="margin-top: 5px;">
+      <label style="margin-right: 15px;">
+        <input type="radio" name="svg_logo_marquee_interaction_type" value="popover" <?php checked($interaction_type, 'popover'); ?>>
+        <?php esc_html_e('Show Popover', 'svg-logo-marquee'); ?>
+      </label>
+      <label>
+        <input type="radio" name="svg_logo_marquee_interaction_type" value="link" <?php checked($interaction_type, 'link'); ?>>
+        <?php esc_html_e('Use Link', 'svg-logo-marquee'); ?>
+      </label>
+    </div>
+  </div>
+  
+  <div id="svg_logo_marquee_popover_content_wrapper" style="<?php echo $interaction_type === 'link' ? 'display: none;' : ''; ?>">
+    <label style="font-weight: bold;"><?php esc_html_e('Popover Content:', 'svg-logo-marquee'); ?></label>
+    <?php
+    wp_editor($popover_content, 'svg_logo_marquee_popover_content', array(
+      'media_buttons' => false,
+      'textarea_rows' => 5,
+      'teeny' => true
+    ));
+    ?>
+    <p><?php esc_html_e('Enter the content to show when users hover over this logo.', 'svg-logo-marquee'); ?></p>
+  </div>
+  
+  <div id="svg_logo_marquee_link_wrapper" style="<?php echo $interaction_type === 'popover' ? 'display: none;' : ''; ?>">
+    <div style="margin-bottom: 10px;">
+      <label style="font-weight: bold; display: block; margin-bottom: 5px;"><?php esc_html_e('Logo URL:', 'svg-logo-marquee'); ?></label>
+      <input type="url" name="svg_logo_marquee_url" style="width: 100%;" value="<?php echo esc_url($logo_url); ?>" placeholder="https://example.com">
+      <p class="description"><?php esc_html_e('Enter the full URL where the logo should link to.', 'svg-logo-marquee'); ?></p>
+    </div>
+    
+    <div>
+      <label style="font-weight: bold; display: block; margin-bottom: 5px;"><?php esc_html_e('Open link in:', 'svg-logo-marquee'); ?></label>
+      <select name="svg_logo_marquee_url_target">
+        <option value="_self" <?php selected($logo_target, '_self'); ?>><?php esc_html_e('Same tab', 'svg-logo-marquee'); ?></option>
+        <option value="_blank" <?php selected($logo_target, '_blank'); ?>><?php esc_html_e('New tab', 'svg-logo-marquee'); ?></option>
+      </select>
+    </div>
+  </div>
+  
+  <script>
+  jQuery(document).ready(function($) {
+    $('input[name="svg_logo_marquee_interaction_type"]').on('change', function() {
+      var selected = $('input[name="svg_logo_marquee_interaction_type"]:checked').val();
+      if (selected === 'popover') {
+        $('#svg_logo_marquee_popover_content_wrapper').show();
+        $('#svg_logo_marquee_link_wrapper').hide();
+      } else {
+        $('#svg_logo_marquee_popover_content_wrapper').hide();
+        $('#svg_logo_marquee_link_wrapper').show();
+      }
+    });
+  });
+  </script>
+  <?php
 }
 
 // Save meta box data
@@ -507,13 +567,35 @@ function svg_logo_marquee_save_meta_box($post_id)
     update_post_meta($post_id, '_svg_logo_marquee_visible', $is_visible);
   }
 
-  // The popover content saving remains unchanged
-  if (isset($_POST['svg_logo_marquee_popover_content'])) {
-    update_post_meta(
-      $post_id,
-      '_svg_logo_marquee_popover_content',
-      wp_kses_post($_POST['svg_logo_marquee_popover_content'])
-    );
+  // Save interaction type and related fields
+  if (isset($_POST['svg_logo_marquee_interaction_type'])) {
+    $interaction_type = sanitize_text_field($_POST['svg_logo_marquee_interaction_type']);
+    update_post_meta($post_id, '_svg_logo_marquee_interaction_type', $interaction_type);
+    
+    // Save popover content if using popover
+    if (isset($_POST['svg_logo_marquee_popover_content'])) {
+      update_post_meta(
+        $post_id,
+        '_svg_logo_marquee_popover_content',
+        wp_kses_post($_POST['svg_logo_marquee_popover_content'])
+      );
+    }
+    
+    // Save URL and target if using link
+    if (isset($_POST['svg_logo_marquee_url'])) {
+      update_post_meta(
+        $post_id,
+        '_svg_logo_marquee_url',
+        esc_url_raw($_POST['svg_logo_marquee_url'])
+      );
+    }
+    
+    if (isset($_POST['svg_logo_marquee_url_target'])) {
+      $target = sanitize_text_field($_POST['svg_logo_marquee_url_target']);
+      // Only allow _blank or _self
+      $target = in_array($target, array('_blank', '_self')) ? $target : '_blank';
+      update_post_meta($post_id, '_svg_logo_marquee_url_target', $target);
+    }
   }
 }
 add_action('save_post', 'svg_logo_marquee_save_meta_box');

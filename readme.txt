@@ -3,7 +3,7 @@ Contributors: miix
 Tags: svg, logo, marquee, animation
 Requires at least: 5.0
 Tested up to: 6.7.2
-Stable tag: 1.0.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,6 +19,7 @@ The plugin allows you to:
 * Control colors for light and dark modes
 * Customize animation speed, direction, and behavior
 * Add informational popover content when users hover over logos
+* Option to make logos clickable with custom URLs
 
 == Installation ==
 
@@ -57,6 +58,7 @@ To add a new logo:
 1. Go to SVG Logos → Add New
 2. Give your logo a title
 3. Paste your SVG code in the SVG Code box
+4. Choose whether to show a popover on hover or make the logo clickable with a URL
 
 **Example SVG format:**
 
@@ -80,6 +82,13 @@ Yes, you can create categories and assign logos to them, then use the category p
 Yes, you can set different colors for light and dark mode, either globally through the shortcode or individually for each logo.
 
 == Changelog ==
+
+= 1.1.0 =
+* Added option to make logos clickable with custom URLs
+* Each logo can now be set to either show a popover or link to a URL
+* Links open in the same tab by default with option to open in new tab
+* Updated admin interface with radio buttons to select interaction type
+* Improved logo wrapper styling for links
 
 = 1.0.2 =
 * Updated the version number
